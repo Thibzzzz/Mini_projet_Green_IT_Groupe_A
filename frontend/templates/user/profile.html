@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block title %}Mon profil — GreenBet{% endblock %}
+{% block content %}
+<div class="container section" style="max-width:520px">
+  <h1 class="mb-2">Modifier mon profil</h1>
+  {% if errors %}
+  <div class="alert alert-error mb-2">
+    {% for e in errors %}<div>• {{ e }}</div>{% endfor %}
+  </div>
+  {% endif %}
+  <div class="card">
+    <form method="POST" action="{{ url_for('user.edit_profile') }}">
+      <input type="hidden" name="_csrf_token" value="{{ csrf_token }}">
+      <div class="form-group">
+        <label class="form-label" for="pseudo">Pseudo</label>
+        <input class="form-input" type="text" id="pseudo" name="pseudo" value="{{ user.pseudo }}" required minlength="3" maxlength="50">
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="email">Email</label>
+        <input class="form-input" type="email" id="email" name="email" value="{{ user.email }}" required>
+      </div>
+      <hr style="border:none;border-top:1px solid var(--border);margin:1rem 0">
+      <p class="text-muted mb-1" style="font-size:.88rem">Changer de mot de passe <em>(laisser vide pour ne pas modifier)</em></p>
+      <div class="form-group">
+        <label class="form-label" for="new_password">Nouveau mot de passe</label>
+        <input class="form-input" type="password" id="new_password" name="new_password" minlength="8" autocomplete="new-password">
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="confirm_password">Confirmer</label>
+        <input class="form-input" type="password" id="confirm_password" name="confirm_password" minlength="8" autocomplete="new-password">
+      </div>
+      <button type="submit" class="btn btn-primary btn-full mt-1">Enregistrer</button>
+    </form>
+  </div>
+
+  <div class="card mt-2" style="border-color:#f5c6cb">
+    <h3 style="color:var(--danger);margin-bottom:.5rem">Zone de danger</h3>
+    <p class="text-muted mb-2" style="font-size:.88rem">La suppression de votre compte est irréversible.</p>
+    <a href="{{ url_for('user.delete_account') }}" class="btn btn-danger btn-sm">Supprimer mon compte</a>
+  </div>
+</div>
+{% endblock %}

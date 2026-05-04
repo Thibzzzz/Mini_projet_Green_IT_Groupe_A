@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}Supprimer mon compte — GreenBet{% endblock %}
+{% block content %}
+<div class="container section" style="max-width:480px">
+  <h1 class="mb-2">Confirmer la suppression</h1>
+  <div class="card">
+    <p class="mb-2">Êtes-vous sûr de vouloir supprimer définitivement votre compte ? Cette action est <strong>irréversible</strong>. Toutes vos données et parties seront effacées.</p>
+    <form method="POST" action="{{ url_for('user.delete_account') }}">
+      <input type="hidden" name="_csrf_token" value="{{ csrf_token }}">
+      <div class="flex gap-1">
+        <button type="submit" class="btn btn-danger">Oui, supprimer mon compte</button>
+        <a href="{{ url_for('user.edit_profile') }}" class="btn btn-ghost">Annuler</a>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

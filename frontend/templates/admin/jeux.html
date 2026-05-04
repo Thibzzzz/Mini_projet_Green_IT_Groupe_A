@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% block title %}Administration jeux — GreenBet{% endblock %}
+{% block content %}
+<div class="container-lg section">
+  <div class="flex-between mb-2">
+    <h1>&#127922; Gestion des jeux</h1>
+    <form class="search-form" method="GET" action="{{ url_for('admin.list_jeux') }}">
+      <input class="form-input" type="search" name="q" placeholder="Rechercher un jeu..." value="{{ search }}">
+      <button type="submit" class="btn btn-outline btn-sm">Filtrer</button>
+    </form>
+  </div>
+
+  <div class="flex gap-1 mb-2" style="flex-wrap:wrap">
+    <a class="btn btn-sm btn-ghost" href="{{ url_for('admin.list_users') }}">Utilisateurs</a>
+    <a class="btn btn-sm btn-primary" href="{{ url_for('admin.list_jeux') }}">Jeux</a>
+    <a class="btn btn-sm btn-outline" href="{{ url_for('admin.create_jeu') }}">+ Nouveau jeu</a>
+  </div>
+
+  <div class="table-wrap card">
+    <table>
+      <thead>
+        <tr>
+          <th>#</th><th>Nom</th><th>Description</th><th>Joueurs</th><th>Statut</th><th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for j in jeux %}
+        <tr>
+          <td>{{ j.id }}</td>
+          <td><strong>{{ j.nom }}</strong></td>
+          <td style="font-size:.85rem">{{ j.description }}</td>
+          <td>{{ j.min_joueurs }} - {{ j.max_joueurs }}</td>
+          <td>
+            {% if j.actif %}
+            <span class="badge badge-green">Actif</span>
+            {% else %}
+            <span class="badge badge-gray">Inactif</span>
+            {% endif %}
+          </td>
+          <td>
+            <div class="flex gap-1" style="flex-wrap:wrap">
+              <a class="btn btn-sm btn-ghost" href="{{ url_for('admin.edit_jeu', jeu_id=j.id) }}">Modifier</a>
+              <a class="btn btn-sm btn-danger" href="{{ url_for('admin.delete_jeu', jeu_id=j.id) }}">Supprimer</a>
+            </div>
+          </td>
+        </tr>
+        {% else %}
+        <tr><td colspan="6" class="text-muted text-center">Aucun jeu trouvé.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  {% if total_pages > 1 %}
+  <div class="flex gap-1 mt-2" style="flex-wrap:wrap; align-items:center;">
+    {% if page > 1 %}
+    <a class="btn btn-ghost btn-sm" href="{{ url_for('admin.list_jeux', q=search, page=page-1) }}">← Précédent</a>
+    {% endif %}
+    <span class="text-muted" style="font-size:.85rem">Page {{ page }} / {{ total_pages }}</span>
+    {% if page < total_pages %}
+    <a class="btn btn-ghost btn-sm" href="{{ url_for('admin.list_jeux', q=search, page=page+1) }}">Suivant →</a>
+    {% endif %}
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

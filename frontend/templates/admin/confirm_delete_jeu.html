@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}Confirmer suppression jeu — GreenBet{% endblock %}
+{% block content %}
+<div class="container section" style="max-width:520px">
+  <h1 class="mb-2">Supprimer un jeu</h1>
+  <div class="card">
+    <p class="mb-2">
+      Voulez-vous vraiment supprimer le jeu <strong>{{ jeu.nom }}</strong> ? Cette action est
+      <strong>irréversible</strong>.
+    </p>
+    <form method="POST" action="{{ url_for('admin.delete_jeu', jeu_id=jeu.id) }}">
+      <input type="hidden" name="_csrf_token" value="{{ csrf_token }}">
+      <div class="flex gap-1" style="flex-wrap:wrap">
+        <button type="submit" class="btn btn-danger">Confirmer la suppression</button>
+        <a href="{{ url_for('admin.list_jeux') }}" class="btn btn-ghost">Annuler</a>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

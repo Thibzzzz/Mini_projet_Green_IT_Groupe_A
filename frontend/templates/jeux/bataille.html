@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block title %}Bataille du croupier — GreenBet{% endblock %}
+{% block content %}
+<div class="container section" style="max-width:760px">
+  <h1>&#9827; Bataille du croupier</h1>
+  <p class="text-muted mb-2">
+    Une carte pour vous, une carte pour le croupier. La plus forte gagne. Mise : <strong>50 pts</strong>.
+  </p>
+
+  <div class="game-area">
+    <div class="bataille-board">
+      <div class="bataille-col">
+        <strong>Croupier</strong>
+        <div class="cards-row bataille-row" id="dealer-cards"></div>
+        <span class="score-line">Valeur : <span id="dealer-value">—</span></span>
+      </div>
+      <div class="bataille-vs">VS</div>
+      <div class="bataille-col">
+        <strong>Vous</strong>
+        <div class="cards-row bataille-row" id="player-cards"></div>
+        <span class="score-line">Valeur : <span id="player-value">—</span></span>
+      </div>
+    </div>
+  </div>
+
+  <div id="result-banner" class="result-banner result-banner-bataille"></div>
+
+  <div class="flex gap-1 bataille-actions" style="flex-wrap:wrap">
+    <button id="btn-jouer" class="btn btn-primary">Lancer une manche</button>
+    <button id="btn-reset" class="btn btn-ghost">Réinitialiser</button>
+  </div>
+
+  <p class="text-muted mt-2" style="font-size:.85rem">
+    Solde actuel : <strong id="solde-display">{{ session.get('solde', '—') }}</strong> pts
+    {% if not session.get('user_id') %}
+    — <a href="{{ url_for('auth.login') }}">Connectez-vous</a> pour sauvegarder vos parties.
+    {% endif %}
+  </p>
+</div>
+{% endblock %}
+{% block extra_scripts %}
+<script defer src="{{ url_for('static', filename='js/bataille.min.js', v='2') }}"></script>
+{% endblock %}

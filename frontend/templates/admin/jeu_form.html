@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block title %}{% if mode == 'create' %}Nouveau jeu{% else %}Modifier jeu{% endif %} — GreenBet{% endblock %}
+{% block content %}
+<div class="container section" style="max-width:680px">
+  <h1 class="mb-2">
+    {% if mode == 'create' %}
+    Créer un jeu
+    {% else %}
+    Modifier un jeu
+    {% endif %}
+  </h1>
+
+  <div class="card">
+    {% if errors %}
+    <div class="alert alert-error mb-2">
+      {% for e in errors %}<div>- {{ e }}</div>{% endfor %}
+    </div>
+    {% endif %}
+
+    <form method="POST" action="{% if mode == 'create' %}{{ url_for('admin.create_jeu') }}{% else %}{{ url_for('admin.edit_jeu', jeu_id=jeu_id) }}{% endif %}">
+      <input type="hidden" name="_csrf_token" value="{{ csrf_token }}">
+
+      <div class="form-group">
+        <label class="form-label">Nom</label>
+        <input class="form-input" type="text" name="nom" value="{{ values.nom }}" required minlength="2">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Description</label>
+        <textarea class="form-input" name="description" rows="4" required minlength="5">{{ values.description }}</textarea>
+      </div>
+
+      <div class="flex gap-1">
+        <div class="form-group" style="flex:1">
+          <label class="form-label">Min joueurs</label>
+          <input class="form-input" type="number" name="min_joueurs" min="1" value="{{ values.min_joueurs }}" required>
+        </div>
+        <div class="form-group" style="flex:1">
+          <label class="form-label">Max joueurs</label>
+          <input class="form-input" type="number" name="max_joueurs" min="1" value="{{ values.max_joueurs }}" required>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Statut</label>
+        <select class="form-input form-select" name="actif">
+          <option value="1" {% if values.actif %}selected{% endif %}>Actif</option>
+          <option value="0" {% if not values.actif %}selected{% endif %}>Inactif</option>
+        </select>
+      </div>
+
+      <div class="flex gap-1" style="flex-wrap:wrap">
+        <button class="btn btn-primary" type="submit">
+          {% if mode == 'create' %}Créer{% else %}Enregistrer{% endif %}
+        </button>
+        <a class="btn btn-ghost" href="{{ url_for('admin.list_jeux') }}">Annuler</a>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

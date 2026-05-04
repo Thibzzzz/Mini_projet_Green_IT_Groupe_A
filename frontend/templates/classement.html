@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}Classement — GreenBet{% endblock %}
+{% block content %}
+<div class="container section">
+  <h1 class="mb-2">&#127942; Classement général</h1>
+  <div class="table-wrap card">
+    <table>
+      <thead>
+        <tr><th>Rang</th><th>Pseudo</th><th>Parties jouées</th><th>Points</th></tr>
+      </thead>
+      <tbody>
+        {% for j in joueurs %}
+        <tr>
+          <td class="rank-{{ loop.index if loop.index <= 3 }}">{{ loop.index }}</td>
+          <td>{{ j.pseudo }}</td>
+          <td>{{ j.nb_parties }}</td>
+          <td><strong>{{ j.solde_points }}</strong></td>
+        </tr>
+        {% else %}
+        <tr><td colspan="4" class="text-muted text-center">Aucun joueur pour l'instant.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  <p class="text-muted mt-2" style="font-size:.85rem">Classement des 20 meilleurs joueurs actifs, trié par solde de points.</p>
+</div>
+{% endblock %}

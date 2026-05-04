@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block title %}Blackjack — GreenBet{% endblock %}
+{% block content %}
+<div class="container section" style="max-width:640px">
+  <h1>&#9824; Blackjack</h1>
+  <p class="text-muted mb-2">Approchez 21 sans dépasser. Mise par défaut : <strong>50 pts</strong>.</p>
+
+  <div class="game-area">
+    <div class="flex-between mb-1">
+      <strong>Croupier</strong>
+      <span class="score-line">Total : <span id="dealer-score">—</span></span>
+    </div>
+    <div class="cards-row" id="dealer-cards"></div>
+  </div>
+
+  <div class="game-area">
+    <div class="flex-between mb-1">
+      <strong>Vous</strong>
+      <span class="score-line">Total : <span id="player-score">—</span></span>
+    </div>
+    <div class="cards-row" id="player-cards"></div>
+  </div>
+
+  <div id="result-banner" class="result-banner result-banner-blackjack"></div>
+
+  <div class="flex gap-1 blackjack-actions" style="flex-wrap:wrap">
+    <button id="btn-deal" class="btn btn-primary">Nouvelle partie</button>
+    <button id="btn-hit" class="btn btn-outline" disabled>Tirer</button>
+    <button id="btn-stand" class="btn btn-ghost" disabled>Rester</button>
+  </div>
+
+  <p class="text-muted mt-2" style="font-size:.85rem">
+    Solde actuel : <strong id="solde-display">{{ session.get('solde', '—') }}</strong> pts
+    {% if not session.get('user_id') %}
+    — <a href="{{ url_for('auth.login') }}">Connectez-vous</a> pour sauvegarder vos parties.
+    {% endif %}
+  </p>
+</div>
+{% endblock %}
+{% block extra_scripts %}
+<script defer src="{{ url_for('static', filename='js/blackjack.min.js', v='2') }}"></script>
+{% endblock %}

@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block title %}Catalogue des jeux — GreenBet{% endblock %}
+{% block content %}
+<div class="container section">
+  <h1 class="mb-2">Nos jeux</h1>
+  <div class="card-grid">
+    {% for jeu in jeux %}
+    <div class="card jeu-card">
+      <div class="jeu-icon">
+        {% if jeu.nom == 'Blackjack' %}&#9824;
+        {% elif 'Roulette' in jeu.nom %}&#9679;
+        {% else %}&#9830;{% endif %}
+      </div>
+      <h3>{% if 'Poker' in jeu.nom %}Bataille du croupier{% else %}{{ jeu.nom }}{% endif %}</h3>
+      <p>{{ jeu.description }}</p>
+      {% if jeu.nom == 'Blackjack' %}
+      <a href="{{ url_for('jeu.blackjack') }}" class="btn btn-primary btn-sm">Jouer</a>
+      {% elif 'Roulette' in jeu.nom %}
+      <a href="{{ url_for('jeu.roulette') }}" class="btn btn-primary btn-sm">Jouer</a>
+      {% elif 'Poker' in jeu.nom %}
+      <a href="{{ url_for('jeu.bataille') }}" class="btn btn-primary btn-sm">Jouer</a>
+      {% else %}
+      <span class="badge badge-gray">Bientôt disponible</span>
+      {% endif %}
+    </div>
+    {% endfor %}
+  </div>
+
+  <h2 class="mt-3 mb-1">Top 10 joueurs</h2>
+  <div class="table-wrap card">
+    <table>
+      <thead><tr><th>#</th><th>Pseudo</th><th>Points</th></tr></thead>
+      <tbody>
+        {% for j in top_joueurs %}
+        <tr>
+          <td class="rank-{{ loop.index if loop.index <= 3 }}">{{ loop.index }}</td>
+          <td>{{ j.pseudo }}</td>
+          <td>{{ j.solde_points }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

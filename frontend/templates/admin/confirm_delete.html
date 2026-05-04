@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}Confirmer la suppression — GreenBet{% endblock %}
+{% block content %}
+<div class="container section" style="max-width:480px">
+  <h1 class="mb-2">Supprimer le compte</h1>
+  <div class="card">
+    <p class="mb-2">Êtes-vous sûr de vouloir supprimer définitivement le compte de <strong>{{ user.pseudo }}</strong> ? Cette action est <strong>irréversible</strong>.</p>
+    <form method="POST" action="{{ url_for('admin.supprimer', user_id=user.id) }}">
+      <input type="hidden" name="_csrf_token" value="{{ csrf_token }}">
+      <div class="flex gap-1">
+        <button type="submit" class="btn btn-danger">Confirmer la suppression</button>
+        <a href="{{ url_for('admin.list_users') }}" class="btn btn-ghost">Annuler</a>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

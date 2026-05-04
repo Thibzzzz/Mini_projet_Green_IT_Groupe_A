@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}Poker simplifié — GreenBet{% endblock %}
+{% block content %}
+<div class="container section" style="max-width:760px">
+  <h1>&#9830; Poker simplifié</h1>
+  <p class="text-muted mb-2">
+    Gardez les cartes qui vous intéressent puis échangez les autres. Mise : <strong>50 pts</strong>.
+  </p>
+
+  <div class="game-area">
+    <div class="flex-between mb-1">
+      <strong>Votre main</strong>
+      <span class="score-line">Rang : <span id="poker-rank">—</span></span>
+    </div>
+    <div class="cards-row poker-cards-row" id="poker-cards"></div>
+    <p class="text-muted mt-1" id="poker-help" style="font-size:.88rem">
+      Cliquez sur les cartes à conserver, puis appuyez sur “Échanger”.
+    </p>
+  </div>
+
+  <div id="result-banner" class="result-banner result-banner-poker"></div>
+
+  <div class="flex gap-1 poker-actions" style="flex-wrap:wrap">
+    <button id="btn-new-hand" class="btn btn-primary">Nouvelle main</button>
+    <button id="btn-draw" class="btn btn-outline" disabled>Échanger</button>
+    <button id="btn-reset" class="btn btn-ghost">Réinitialiser</button>
+  </div>
+
+  <p class="text-muted mt-2" style="font-size:.85rem">
+    Solde actuel : <strong id="solde-display">{{ session.get('solde', '—') }}</strong> pts
+    {% if not session.get('user_id') %}
+    — <a href="{{ url_for('auth.login') }}">Connectez-vous</a> pour sauvegarder vos parties.
+    {% endif %}
+  </p>
+</div>
+{% endblock %}
+{% block extra_scripts %}
+<script defer src="{{ url_for('static', filename='js/poker.min.js', v='2') }}"></script>
+{% endblock %}

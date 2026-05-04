@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+{% block title %}Administration — GreenBet{% endblock %}
+{% block content %}
+<div class="container-lg section">
+  <div class="flex-between mb-2">
+    <h1>&#9998; Gestion des utilisateurs</h1>
+    <form class="search-form" method="GET" action="{{ url_for('admin.list_users') }}">
+      <input class="form-input" type="search" name="q" placeholder="Rechercher un pseudo…" value="{{ search }}">
+      <button type="submit" class="btn btn-outline btn-sm">Filtrer</button>
+    </form>
+  </div>
+  <div class="flex gap-1 mb-2" style="flex-wrap:wrap">
+    <a class="btn btn-sm btn-primary" href="{{ url_for('admin.list_users') }}">Utilisateurs</a>
+    <a class="btn btn-sm btn-ghost" href="{{ url_for('admin.list_jeux') }}">Jeux</a>
+  </div>
+
+  <div class="table-wrap card">
+    <table>
+      <thead>
+        <tr>
+          <th>Pseudo</th><th>Email</th><th>Rôle</th><th>Statut</th>
+          <th>Points</th><th>Inscription</th><th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for u in users %}
+        <tr>
+          <td><strong>{{ u.pseudo }}</strong></td>
+          <td style="font-size:.85rem">{{ u.email }}</td>
+          <td>
+            {% if u.role == 'admin' %}
+            <span class="badge badge-green">admin</span>
+            {% else %}
+            <span class="badge badge-gray">joueur</span>
+            {% endif %}
+          </td>
+          <td>
+            {% if u.statut == 'banni' %}
+            <span class="badge badge-red">Banni</span>
+            {% else %}
+            <span class="badge badge-green">Actif</span>
+            {% endif %}
+          </td>
+          <td>{{ u.solde_points }}</td>
+          <td style="font-size:.8rem;color:var(--text-muted)">{{ u.created_at[:10] if u.created_at else '—' }}</td>
+          <td>
+            <div class="flex gap-1" style="flex-wrap:wrap">
+              {% if u.role != 'admin' %}
+              <form method="POST" action="{{ url_for('admin.bannir', user_id=u.id) }}">
+                <input type="hidden" name="_csrf_token" value="{{ csrf_token }}">
+                <button type="submit" class="btn btn-sm {% if u.statut == 'banni' %}btn-outline{% else %}btn-danger{% endif %}">
+                  {{ 'Débannir' if u.statut == 'banni' else 'Bannir' }}
+                </button>
+              </form>
+              <form method="POST" action="{{ url_for('admin.changer_role', user_id=u.id) }}">
+                <input type="hidden" name="_csrf_token" value="{{ csrf_token }}">
+                <button type="submit" class="btn btn-sm btn-ghost">→ admin</button>
+              </form>
+              <a href="{{ url_for('admin.supprimer', user_id=u.id) }}" class="btn btn-sm btn-danger">Supprimer</a>
+              {% else %}
+              <span class="text-muted" style="font-size:.8rem">—</span>
+              {% endif %}
+            </div>
+          </td>
+        </tr>
+        {% else %}
+        <tr><td colspan="7" class="text-muted text-center">Aucun utilisateur trouvé.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  {% if total_pages > 1 %}
+  <div class="flex gap-1 mt-2" style="flex-wrap:wrap; align-items:center;">
+    {% if page > 1 %}
+    <a class="btn btn-ghost btn-sm" href="{{ url_for('admin.list_users', q=search, page=page-1) }}">← Précédent</a>
+    {% endif %}
+    <span class="text-muted" style="font-size:.85rem">Page {{ page }} / {{ total_pages }}</span>
+    {% if page < total_pages %}
+    <a class="btn btn-ghost btn-sm" href="{{ url_for('admin.list_users', q=search, page=page+1) }}">Suivant →</a>
+    {% endif %}
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

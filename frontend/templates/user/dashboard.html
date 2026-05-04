@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% block title %}Mon espace — GreenBet{% endblock %}
+{% block content %}
+<div class="container section">
+  <div class="flex-between mb-2">
+    <h1>Bonjour, {{ user.pseudo }} !</h1>
+    <span class="badge badge-green">{{ user.solde_points }} pts</span>
+  </div>
+
+  <div class="card-grid">
+    <div class="card card-sm text-center">
+      <div class="stat-value">{{ user.solde_points }}</div>
+      <div class="stat-label">Points</div>
+    </div>
+    <div class="card card-sm text-center">
+      <div class="stat-value">{{ nb_parties }}</div>
+      <div class="stat-label">Parties jouées</div>
+    </div>
+    <div class="card card-sm text-center">
+      <div class="stat-value">{{ user.role }}</div>
+      <div class="stat-label">Rôle</div>
+    </div>
+  </div>
+
+  <h2 class="mt-3 mb-1">Dernières parties</h2>
+  {% if parties %}
+  <div class="table-wrap card">
+    <table>
+      <thead>
+        <tr><th>Jeu</th><th>Résultat</th><th>Points</th><th>Date</th></tr>
+      </thead>
+      <tbody>
+        {% for p in parties %}
+        <tr>
+          <td>{{ p.jeu }}</td>
+          <td>
+            {% if p.resultat == 'gagne' %}<span class="badge badge-green">Gagné</span>
+            {% elif p.resultat == 'perdu' %}<span class="badge badge-red">Perdu</span>
+            {% else %}<span class="badge badge-gray">Nul</span>{% endif %}
+          </td>
+          <td>{% if p.points_gagnes >= 0 %}+{% endif %}{{ p.points_gagnes }}</td>
+          <td style="font-size:.82rem;color:var(--text-muted)">{{ p.joue_le }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+  <p class="text-muted">Vous n'avez pas encore joué. <a href="{{ url_for('jeu.catalogue') }}">Commencer à jouer</a></p>
+  {% endif %}
+
+  <div class="flex gap-1 mt-3" style="flex-wrap:wrap">
+    <a href="{{ url_for('jeu.catalogue') }}" class="btn btn-primary">Jouer</a>
+    <a href="{{ url_for('partie.classement') }}" class="btn btn-outline">Classement</a>
+    <a href="{{ url_for('user.edit_profile') }}" class="btn btn-ghost">Modifier mon profil</a>
+    <a href="{{ url_for('auth.logout') }}" class="btn btn-ghost">Déconnexion</a>
+  </div>
+</div>
+{% endblock %}

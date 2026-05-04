@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block title %}Roulette verte — GreenBet{% endblock %}
+{% block content %}
+<div class="container section" style="max-width:600px">
+  <h1>&#9679; Roulette verte</h1>
+  <p class="text-muted mb-2">Misez sur Rouge (x2), Noir (x2) ou un numéro plein (x35). Mise : <strong>50 pts</strong>.</p>
+
+  <div class="game-area">
+    <p class="mb-1"><strong>Choisissez votre pari :</strong></p>
+    <div class="bet-options" id="bet-options">
+      <button class="bet-btn rouge-btn" data-choix="rouge">Rouge &#9632;</button>
+      <button class="bet-btn noir-btn" data-choix="noir">Noir &#9632;</button>
+      {% for n in range(37) %}
+      <button class="bet-btn" data-choix="{{ n }}">{{ n }}</button>
+      {% endfor %}
+    </div>
+
+    <div class="roulette-wrapper" id="roulette-wrapper">
+      <div class="roulette-pin"></div>
+      <div class="roulette-wheel" id="roulette-wheel"></div>
+    </div>
+
+    <div id="roulette-result" class="mt-2 text-center" style="display:none">
+      <p>Numéro tiré : <strong id="numero-tire" style="font-size: 1.25rem;">—</strong>
+         <span id="couleur-tire" class="badge"></span>
+      </p>
+    </div>
+  </div>
+
+  <div id="result-banner" class="result-banner result-banner-roulette"></div>
+
+  <div class="flex gap-1 roulette-actions" style="flex-wrap:wrap">
+    <button id="btn-jouer" class="btn btn-primary" disabled>Lancer la roulette</button>
+    <button id="btn-reset" class="btn btn-ghost">Réinitialiser</button>
+  </div>
+
+  <p class="text-muted mt-2" style="font-size:.85rem">
+    Solde actuel : <strong id="solde-display">—</strong> pts
+    {% if not session.get('user_id') %}
+    — <a href="{{ url_for('auth.login') }}">Connectez-vous</a> pour sauvegarder vos parties.
+    {% endif %}
+  </p>
+</div>
+{% endblock %}
+{% block extra_scripts %}
+<script defer src="{{ url_for('static', filename='js/roulette.min.js', v='2') }}"></script>
+{% endblock %}

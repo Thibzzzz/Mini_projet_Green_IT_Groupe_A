@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}Connexion — GreenBet{% endblock %}
+{% block content %}
+<div class="container section" style="max-width:420px">
+  <h1 class="mb-2">Connexion</h1>
+  {% if error %}
+  <div class="alert alert-error mb-2">{{ error }}</div>
+  {% endif %}
+  <div class="card">
+    <form method="POST" action="{{ url_for('auth.login') }}">
+      <input type="hidden" name="_csrf_token" value="{{ csrf_token }}">
+      <div class="form-group">
+        <label class="form-label" for="email">Adresse email</label>
+        <input class="form-input" type="email" id="email" name="email" required autocomplete="email">
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="password">Mot de passe</label>
+        <input class="form-input" type="password" id="password" name="password" required autocomplete="current-password">
+      </div>
+      <button type="submit" class="btn btn-primary btn-full mt-2">Se connecter</button>
+    </form>
+  </div>
+  <p class="text-center mt-2 text-muted" style="font-size:.9rem">
+    Pas encore de compte ? <a href="{{ url_for('auth.register') }}">Inscription</a>
+  </p>
+</div>
+{% endblock %}

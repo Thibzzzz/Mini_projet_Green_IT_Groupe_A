@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% block title %}GreenBet ♠ — Casino sobre & éco-conçu{% endblock %}
+{% block meta_desc %}GreenBet, le casino en ligne le plus green. Blackjack, Roulette, Bataille du croupier — sans argent réel.{% endblock %}
+
+{% block content %}
+<section class="hero">
+  <h1>♠ GreenBet — Le casino le plus Green</h1>
+  <p>Jouez au Blackjack, à la Roulette et à la Bataille du croupier — sans argent réel, sans tracker, sans framework superflu.</p>
+  <div class="hero-btns">
+    <a href="{{ url_for('jeu.catalogue') }}" class="btn btn-primary">Jouer maintenant</a>
+    <a href="#engagements" class="btn btn-outline">Nos engagements</a>
+  </div>
+</section>
+
+<div class="stats-strip">
+  <div class="stat">
+    <span class="stat-value">3</span>
+    <span class="stat-label">Jeux disponibles</span>
+  </div>
+  <div class="stat">
+    <span class="stat-value" id="nb-joueurs">—</span>
+    <span class="stat-label">Joueurs actifs</span>
+  </div>
+  <div class="stat">
+    <span class="stat-value" style="color:var(--success)">−42%</span>
+    <span class="stat-label">CO₂ économisé vs. stack classique</span>
+  </div>
+</div>
+
+<section class="section commitments" id="engagements">
+  <div class="container">
+    <h2 class="mb-2">Nos engagements Green IT</h2>
+    <ul>
+      <li>Zéro framework CSS — Bootstrap remplacé par du CSS vanilla (économie : ~30 Ko)</li>
+      <li>Zéro framework JS — React remplacé par du JS vanilla (économie : ~130 Ko)</li>
+      <li>Polices système uniquement — 0 requête Google Fonts</li>
+      <li>Zéro tracker tiers — aucune donnée collectée inutilement</li>
+      <li>Pages générées côté serveur — moins de JS envoyé au client</li>
+      <li>Icônes Unicode ♠ ♥ ♦ ♣ — pas de bibliothèque d'icônes</li>
+      <li>Objectif : page d'accueil &lt; 20 Ko, dashboard &lt; 30 Ko</li>
+      <li>Images légères uniquement (SVG / WebP &lt; 50 Ko)</li>
+    </ul>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <h2 class="mb-2">Nos jeux</h2>
+    <div class="card-grid">
+      <div class="card jeu-card">
+        <div class="jeu-icon">&#9824;</div>
+        <h3>Blackjack</h3>
+        <p>Approchez 21 sans dépasser. Jouez contre le croupier en JavaScript vanilla.</p>
+        <a href="{{ url_for('jeu.blackjack') }}" class="btn btn-primary btn-sm">Jouer</a>
+      </div>
+      <div class="card jeu-card">
+        <div class="jeu-icon">&#9679;</div>
+        <h3>Roulette verte</h3>
+        <p>Misez sur rouge, noir ou un numéro. Résultat généré côté serveur, sans triche possible.</p>
+        <a href="{{ url_for('jeu.roulette') }}" class="btn btn-primary btn-sm">Jouer</a>
+      </div>
+      <div class="card jeu-card">
+        <div class="jeu-icon">&#9830;</div>
+        <h3>Bataille du croupier</h3>
+        <p>Une carte contre une carte. La plus haute gagne — rapide, simple, 100% JS vanilla.</p>
+        <a href="{{ url_for('jeu.bataille') }}" class="btn btn-primary btn-sm">Jouer</a>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="{% block meta_desc %}GreenBet — casino en ligne sobre et éco-responsable.{% endblock %}">
+  <title>{% block title %}GreenBet ♠{% endblock %}</title>
+  <script>
+    (function () {
+      try {
+        var saved = localStorage.getItem("theme");
+        if (saved === "dark" || saved === "light") {
+          document.documentElement.setAttribute("data-theme", saved);
+        }
+      } catch (e) {}
+    })();
+  </script>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.min.css', v='4') }}">
+  {% block extra_head %}{% endblock %}
+</head>
+<body>
+
+<nav class="nav">
+  <a href="{{ url_for('main.index') }}" class="nav-logo">♠ GreenBet</a>
+  <ul class="nav-links">
+    <li><a href="{{ url_for('jeu.catalogue') }}">Jeux</a></li>
+    <li><a href="{{ url_for('partie.classement') }}">Classement</a></li>
+    {% if session.get('role') == 'admin' %}
+    <li><a href="{{ url_for('admin.list_users') }}">Administration</a></li>
+    {% endif %}
+  </ul>
+  <div class="nav-actions">
+    <button id="theme-toggle" class="btn btn-ghost btn-sm" type="button" aria-label="Changer de thème">🌙 Mode sombre</button>
+    {% if session.get('user_id') %}
+      <span class="solde-display">{{ session.pseudo }}</span>
+      <a href="{{ url_for('user.dashboard') }}" class="btn btn-ghost btn-sm">Mon espace</a>
+      <a href="{{ url_for('auth.logout') }}" class="btn btn-outline btn-sm">Déconnexion</a>
+    {% else %}
+      <a href="{{ url_for('auth.login') }}" class="btn btn-ghost btn-sm">Connexion</a>
+      <a href="{{ url_for('auth.register') }}" class="btn btn-primary btn-sm">Inscription</a>
+    {% endif %}
+  </div>
+</nav>
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+<div class="alerts">
+  {% for cat, msg in messages %}
+  <div class="alert alert-{{ cat }}">{{ msg }}</div>
+  {% endfor %}
+</div>
+{% endif %}
+{% endwith %}
+
+<main>
+  {% block content %}{% endblock %}
+</main>
+
+<footer>
+  <div>♠ GreenBet — Projet pédagogique EFREI Paris · Numérique Durable TI616 · Jeu fictif, aucun argent réel</div>
+  <div class="mt-1">Pages légères · Zéro tracker · Zéro framework · CO₂ minimal</div>
+</footer>
+
+<script>
+  (function () {
+    var btn = document.getElementById("theme-toggle");
+    if (!btn) return;
+    var root = document.documentElement;
+
+    function currentTheme() {
+      var forced = root.getAttribute("data-theme");
+      if (forced === "dark" || forced === "light") return forced;
+      return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+    }
+
+    function syncLabel() {
+      var t = currentTheme();
+      btn.textContent = t === "dark" ? "☀️ Mode clair" : "🌙 Mode sombre";
+      btn.setAttribute("aria-label", t === "dark" ? "Passer au mode clair" : "Passer au mode sombre");
+    }
+
+    btn.addEventListener("click", function () {
+      var next = currentTheme() === "dark" ? "light" : "dark";
+      root.setAttribute("data-theme", next);
+      try { localStorage.setItem("theme", next); } catch (e) {}
+      syncLabel();
+    });
+
+    syncLabel();
+  })();
+</script>
+{% block extra_scripts %}{% endblock %}
+</body>
+</html>
