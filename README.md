@@ -75,3 +75,8 @@ GreenBet/
 - Ne jamais versionner `.env` (voir `.gitignore`).
 - Le fichier `.env.example` documente les variables attendues.
 - SQLite est pratique mais pas idéal pour de la persistance en prod.
+
+Seyhan KARA : Chef de projet · Architecture Flask · Déploiement
+Mickaël LY : Front-end · Templates Jinja2 · CSS vanilla 
+Thibault PILAT : Base de données · Modèles · API REST
+Sacha LE MARREC : Jeux (Blackjack/Roulette) · Tests · Green IT 
