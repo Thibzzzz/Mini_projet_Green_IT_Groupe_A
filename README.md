@@ -68,12 +68,7 @@ GreenBet/
 → Voir `GREEN.md`
 
 ## Déploiement (général)
-
-- Configurer `SECRET_KEY` en variable d’environnement.
-- Choisir la base:
-  - `DB_ENGINE=sqlite` (démo / local)
-  - ou `DB_ENGINE=mysql` + `MYSQL_HOST`, `MYSQL_USER`, `MYSQL_PASSWORD`, `MYSQL_DATABASE` (production)
-- Sessions: optionnel `SESSION_FILE_DIR` (ex: `/tmp/greenbet_sessions`).
+ Pour se connecter au site : https://miniprojetgreenitgroupea-production.up.railway.app
 
 ### Notes importantes
 
